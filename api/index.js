@@ -2,15 +2,20 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 
-const delayMiddleware = function (req, res, next) {
+const waitFor = (delayInSecond) =>
+  new Promise((resolve) => setTimeout(resolve, delayInSecond * 1000));
 
+const delayMiddleware = async (req, res, next) => {
+  if (req.query.delay) {
+    await waitFor(+req.query.delay);
+  }
   next();
 };
 
 const { cocktails, ingredients } = require("./data");
 
 app.use(cors());
-app.use(m)
+app.use(delayMiddleware);
 
 app.get("/cocktails", function (req, res, next) {
   res.json(cocktails);
@@ -26,5 +31,5 @@ app.get("/ingredients/:id", function (req, res, next) {
 });
 
 app.listen(80, function () {
-  console.log("CORS-enabled web server listening on port 80");
+  console.log("Listening on port 80");
 });
