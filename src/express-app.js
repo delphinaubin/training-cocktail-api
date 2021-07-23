@@ -1,18 +1,18 @@
 const express = require("express");
 const cors = require("cors");
+const { cocktails, ingredients } = require("./data");
+
 const app = express();
 
 const waitFor = (delayInSecond) =>
   new Promise((resolve) => setTimeout(resolve, delayInSecond * 1000));
-
 const delayMiddleware = async (req, res, next) => {
-  if (req.query.delay) {
-    await waitFor(+req.query.delay);
+    if (req.query.delay) {
+      await waitFor(+req.query.delay);
   }
-  next();
-};
+    next();
 
-const { cocktails, ingredients } = require("./data");
+};
 
 app.use(cors());
 app.use(delayMiddleware);
